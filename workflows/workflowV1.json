@@ -1,0 +1,160 @@
+{
+  "name": "My workflow",
+  "nodes": [
+    {
+      "parameters": {
+        "updates": [
+          "message"
+        ],
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.telegramTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        0,
+        0
+      ],
+      "id": "f331c64a-19a1-4142-8f26-ba8f488ebe9a",
+      "name": "Telegram Trigger",
+      "webhookId": "e0b05a20-d71a-4e85-a765-5e939c7ef1cc",
+      "credentials": {
+        "telegramApi": {
+          "id": "sKG8FyR2b3FHCfZO",
+          "name": "Telegram account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "loose",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "2277c03b-1474-444a-b48e-882bc339b8fc",
+              "leftValue": "={{$json.message.photo !== undefined}}\n",
+              "rightValue": "",
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "looseTypeValidation": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        208,
+        0
+      ],
+      "id": "deec5247-e196-4b59-907f-5e644c3d364c",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "url": "https://api.telegram.org/bot8357627581:AAE4EviSFAmHbSc7rGTQEBu7bAoQaBAu-t8/getFile",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "file_id",
+              "value": "={{$json.message.photo.at(-1).file_id}}"
+            }
+          ]
+        },
+        "options": {
+          "response": {
+            "response": {
+              "responseFormat": "json"
+            }
+          }
+        }
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        416,
+        -96
+      ],
+      "id": "36d0426b-7378-43a3-83ba-0dc0963b9a74",
+      "name": "HTTP Request"
+    },
+    {
+      "parameters": {
+        "url": "=https://api.telegram.org/file/bot8357627581:AAE4EviSFAmHbSc7rGTQEBu7bAoQaBAu-t8/{{$json.result.file_path}}",
+        "options": {
+          "response": {
+            "response": {
+              "responseFormat": "file"
+            }
+          }
+        }
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        624,
+        -96
+      ],
+      "id": "98b10ce1-d415-4a5f-a7b9-166a10261f77",
+      "name": "HTTP Request1"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Telegram Trigger": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "availableInMCP": false
+  },
+  "versionId": "4a6b6d48-9beb-4cc5-9b20-c323fb5348a1",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "1c1166277b731850423ab3b147bb70c50be6873157edc0fda1b7c5a0ae970ded"
+  },
+  "id": "_53W94gc6vtilO_Qr6elV",
+  "tags": []
+}
