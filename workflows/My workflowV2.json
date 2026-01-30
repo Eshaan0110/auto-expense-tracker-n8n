@@ -61,7 +61,7 @@
     },
     {
       "parameters": {
-        "url": "https://api.telegram.org/bot8357627581:AAE4EviSFAmHbSc7rGTQEBu7bAoQaBAu-t8/getFile",
+        "url": "https://api.telegram.org/bot<token>/getFile",
         "sendQuery": true,
         "queryParameters": {
           "parameters": [
